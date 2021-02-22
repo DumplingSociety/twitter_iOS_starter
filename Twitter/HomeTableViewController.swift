@@ -27,15 +27,12 @@ class HomeTableViewController: UITableViewController {
         letmyRefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
         tableView.refreshControl = letmyRefreshControl
         
-
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.loadTweets()
+    }
     
     //load tweet data by calling api
      @objc func loadTweets(){
@@ -130,6 +127,10 @@ class HomeTableViewController: UITableViewController {
             cell.profileImageView.image = UIImage(data: imageData)
         }
         
+        cell.setFavorite(tweetArray[indexPath.row]["favorited"] as! Bool ) // this will be used on favButton
+        cell.tweetId = tweetArray[indexPath.row]["id"] as! Int // let it know its (as! Int) int
+        cell.setRetweeted(tweetArray[indexPath.row]["retweeted"] as! Bool)
+        
         return cell
     }
     
@@ -146,6 +147,8 @@ class HomeTableViewController: UITableViewController {
         // how many rows
         return tweetArray.count
     }
+    
+
 
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
